@@ -94,7 +94,7 @@ class SearchRepositoryAdapterTest {
    @Test
    @DisplayName("Should return correct count when countEquals is called")
    void shouldReturnCorrectCountWhenCountEqualsIsCalled() {
-      when(searchJpaRepository.countByHotelIdAndCheckInAndCheckOutAndAges(
+      when(searchJpaRepository.countByHotelIdAndCheckinAndCheckoutAndAges(
             HOTEL_ID.value(),
             DATE_RANGE.checkIn(),
             DATE_RANGE.checkOut(),

@@ -29,10 +29,10 @@ public class SearchEntity {
    private String hotelId;
 
    @Column(name = "check_in", nullable = false)
-   private LocalDate checkIn;
+   private LocalDate checkin;
 
    @Column(name = "check_out", nullable = false)
-   private LocalDate checkOut;
+   private LocalDate checkout;
 
    @Column(name = "ages", nullable = false, length = 255)
    private String ages;
@@ -48,26 +48,26 @@ public class SearchEntity {
     *
     * @param searchId the unique business identifier (UUID)
     * @param hotelId  the hotel identifier
-    * @param checkIn  the check-in date
-    * @param checkOut the check-out date
+    * @param checkin  the check-in date
+    * @param checkout the check-out date
     * @param ages     the serialized ages string (e.g. "30,29,1,3")
     */
    public SearchEntity(
          final String searchId,
          final String hotelId,
-         final LocalDate checkIn,
-         final LocalDate checkOut,
+         final LocalDate checkin,
+         final LocalDate checkout,
          final String ages) {
       this.searchId = searchId;
       this.hotelId = hotelId;
-      this.checkIn = checkIn;
-      this.checkOut = checkOut;
+      this.checkin = checkin;
+      this.checkout = checkout;
       this.ages = ages;
    }
 
    public String getSearchId() { return searchId; }
    public String getHotelId() { return hotelId; }
-   public LocalDate getCheckIn() { return checkIn; }
-   public LocalDate getCheckOut() { return checkOut; }
+   public LocalDate getCheckin() { return checkin; }
+   public LocalDate getCheckout() { return checkout; }
    public String getAges() { return ages; }
 }

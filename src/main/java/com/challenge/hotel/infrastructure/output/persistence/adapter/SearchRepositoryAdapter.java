@@ -69,7 +69,7 @@ public class SearchRepositoryAdapter implements SearchRepository {
     */
    @Override
    public long countEquals(final Search search) {
-      return searchJpaRepository.countByHotelIdAndCheckInAndCheckOutAndAges(
+      return searchJpaRepository.countByHotelIdAndCheckinAndCheckoutAndAges(
             search.hotelId().value(),
             search.dateRange().checkIn(),
             search.dateRange().checkOut(),
@@ -105,7 +105,7 @@ public class SearchRepositoryAdapter implements SearchRepository {
       return new Search(
             new SearchId(entity.getSearchId()),
             new HotelId(entity.getHotelId()),
-            new DateRange(entity.getCheckIn(), entity.getCheckOut()),
+            new DateRange(entity.getCheckin(), entity.getCheckout()),
             new Ages(deserializeAges(entity.getAges()))
       );
    }

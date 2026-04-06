@@ -26,14 +26,14 @@ public interface SearchJpaRepository extends JpaRepository<SearchEntity, Long> {
     * Age order is significant — "30,29,1,3" differs from "3,1,29,30".
     *
     * @param hotelId  the hotel identifier
-    * @param checkIn  the check-in date
-    * @param checkOut the check-out date
+    * @param checkin  the check-in date
+    * @param checkout the check-out date
     * @param ages     the serialized ages string preserving insertion order
     * @return the count of matching searches
     */
-   long countByHotelIdAndCheckInAndCheckOutAndAges(
+   long countByHotelIdAndCheckinAndCheckoutAndAges(
          String hotelId,
-         LocalDate checkIn,
-         LocalDate checkOut,
+         LocalDate checkin,
+         LocalDate checkout,
          String ages);
 }

@@ -13,11 +13,14 @@ spring:
     username: system
     password: oracle
     driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 60000
+      initialization-fail-timeout: -1
 
   # JPA / Hibernate
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
