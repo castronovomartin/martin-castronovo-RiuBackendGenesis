@@ -91,4 +91,15 @@ class CountControllerTest {
              .andExpect(jsonPath("$.search.ages[2]").value(29))
              .andExpect(jsonPath("$.search.ages[3]").value(30));
    }
+
+   @Test
+   @DisplayName("Should return 400 when searchId does not exist")
+   void shouldReturn400WhenSearchIdDoesNotExist() throws Exception {
+      when(countUseCase.count(any()))
+            .thenThrow(new IllegalArgumentException("No search found for searchId: test-uuid"));
+      mockMvc.perform(get("/count")
+                   .param("searchId", "non-existing-uuid"))
+             .andExpect(status().isBadRequest())
+             .andExpect(jsonPath("$.error").value("No search found for searchId: test-uuid"));
+   }
 }
