@@ -76,6 +76,30 @@ services:
     networks:
       - hotel-network
 
+  kafdrop:
+    image: obsidiandynamics/kafdrop:latest
+    container_name: kafdrop
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKERCONNECT: kafka:9092
+    ports:
+      - "9000:9000"
+    networks:
+      - hotel-network
+
+  cloudbeaver:
+     image: dbeaver/cloudbeaver:latest
+     container_name: cloudbeaver
+     depends_on:
+       oracle:
+         condition: service_healthy
+     ports:
+       - "8978:8978"
+     networks:
+       - hotel-network
+
 networks:
   hotel-network:
     driver: bridge
