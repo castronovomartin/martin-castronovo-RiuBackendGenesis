@@ -33,7 +33,7 @@ public class CountService implements CountUseCase {
    public CountResult count(final SearchId searchId) {
       final var search = searchRepository.findById(searchId)
                                          .orElseThrow(() -> new IllegalArgumentException(
-                                               "No search found for searchId: " + searchId.value()));
+                                               "No search found for searchId: %s".formatted(searchId.value())));
       final var count = searchRepository.countEquals(search);
       return new CountResult(search, count);
    }

@@ -1,10 +1,6 @@
 package com.challenge.hotel.infrastructure.input.kafka;
 
-import com.challenge.hotel.domain.model.Ages;
-import com.challenge.hotel.domain.model.DateRange;
-import com.challenge.hotel.domain.model.HotelId;
 import com.challenge.hotel.domain.model.Search;
-import com.challenge.hotel.domain.model.SearchId;
 import com.challenge.hotel.domain.port.output.SearchRepository;
 import com.challenge.hotel.infrastructure.output.kafka.SearchMessage;
 import org.junit.jupiter.api.BeforeEach;

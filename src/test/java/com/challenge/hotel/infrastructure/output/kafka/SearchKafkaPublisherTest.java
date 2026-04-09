@@ -1,5 +1,7 @@
 package com.challenge.hotel.infrastructure.output.kafka;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import com.challenge.hotel.domain.model.Ages;
 import com.challenge.hotel.domain.model.DateRange;
 import com.challenge.hotel.domain.model.HotelId;
@@ -67,9 +69,9 @@ class SearchKafkaPublisherTest {
       publisher.publish(SEARCH);
       final var keyCaptor = ArgumentCaptor.forClass(String.class);
       verify(kafkaTemplate).send(
-            org.mockito.ArgumentMatchers.anyString(),
+            anyString(),
             keyCaptor.capture(),
-            org.mockito.ArgumentMatchers.any()
+            any()
       );
       assertThat(keyCaptor.getValue()).isEqualTo(SEARCH_ID.value());
    }
@@ -80,8 +82,8 @@ class SearchKafkaPublisherTest {
       publisher.publish(SEARCH);
       final var messageCaptor = ArgumentCaptor.forClass(SearchMessage.class);
       verify(kafkaTemplate).send(
-            org.mockito.ArgumentMatchers.anyString(),
-            org.mockito.ArgumentMatchers.anyString(),
+            anyString(),
+            anyString(),
             messageCaptor.capture()
       );
       final var message = messageCaptor.getValue();

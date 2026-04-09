@@ -1,5 +1,9 @@
 package com.challenge.hotel.infrastructure.input.rest;
 
+import java.util.stream.Collectors;
+import org.springframework.validation.FieldError;
+
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +32,8 @@ public class GlobalExceptionHandler {
       final var errors = ex.getBindingResult()
                            .getFieldErrors()
                            .stream()
-                           .collect(java.util.stream.Collectors.toMap(
-                                 org.springframework.validation.FieldError::getField,
+                           .collect(Collectors.toMap(
+                                 FieldError::getField,
                                  field -> field.getDefaultMessage() != null
                                        ? field.getDefaultMessage()
                                        : "Invalid value"
@@ -48,9 +52,9 @@ public class GlobalExceptionHandler {
          final ConstraintViolationException ex) {
       final var errors = ex.getConstraintViolations()
                            .stream()
-                           .collect(java.util.stream.Collectors.toMap(
+                           .collect(Collectors.toMap(
                                  v -> v.getPropertyPath().toString(),
-                                 v -> v.getMessage()
+                                 ConstraintViolation::getMessage
                            ));
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
    }
