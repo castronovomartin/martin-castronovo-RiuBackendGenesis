@@ -40,6 +40,8 @@ docker compose up --build
 
 This command compiles the application inside Docker and starts the full ecosystem automatically — no local Java or Maven required.
 
+> **macOS users:** Docker Desktop may request permission to access data from other apps. Click **Allow** to proceed — this is required for Docker to function correctly.
+
 **First time:** may take 5 to 10 minutes — Oracle needs to initialize its database.
 
 ### 3. Verify all services are running
@@ -116,7 +118,9 @@ Creates a new hotel availability search, publishes it to Kafka and returns a uni
 **Error response — HTTP 400:**
 ```json
 {
-  "hotelId": "hotelId must not be blank"
+  "error": "VALIDATION_ERROR",
+  "message": "{hotelId=hotelId must not be blank}",
+  "timestamp": "12/04/2026 20:30:00"
 }
 ```
 
@@ -143,12 +147,18 @@ Age order is significant — `[30, 29, 1, 3]` and `[3, 1, 29, 30]` are considere
 }
 ```
 
-**Error response — HTTP 400:**
+**Error response — HTTP 404:**
 ```json
 {
-  "error": "No search found for searchId: cb8c8aba-1e99-4258-95c1-37c45ba9da39"
+  "error": "SEARCH_NOT_FOUND",
+  "message": "No search found for searchId: cb8c8aba-1e99-4258-95c1-37c45ba9da39",
+  "timestamp": "12/04/2026 20:30:00"
 }
 ```
+
+> **Tip:** To see the count increase, execute POST /search 3 times with the same body.
+> Then execute GET /count with any of the returned searchIds — the count will reflect
+> all searches with the same hotelId, checkIn, checkOut and ages in the same order.
 
 ---
 
@@ -165,8 +175,9 @@ Age order is significant — `[30, 29, 1, 3]` and `[3, 1, 29, 30]` are considere
 
 1. Open http://localhost:8978
 2. First time — complete the setup wizard:
-    - Username: `cbadmin` / Password: `Admin123`
-    - Click **Next → Finish**
+   - Click **Next**
+   - Set credentials: Username `cbadmin` / Password `Admin123` / Repeat Password `Admin123`
+   - Click **Next → Finish**
 3. Login with `cbadmin` / `Admin123`
 4. Click the CloudBeaver logo (top left) → **New Connection → Oracle**
 5. Fill in:
@@ -236,6 +247,9 @@ All domain objects and DTOs are Java records. Mutable collections use `List.copy
 
 **SQL injection prevention**
 Spring Data JPA derived query methods use prepared statements automatically — no manual SQL anywhere in the codebase.
+
+**Standardized error responses**
+All API errors return a consistent `ErrorResponse` structure with `error` code, `message` and `timestamp`. Business rule violations return HTTP 404, validation errors return HTTP 400.
 
 **Test coverage**
 Minimum 80% enforced by Jacoco on all four metrics (lines, branches, methods, instructions). Current coverage: 94% instructions, 86% branches.
