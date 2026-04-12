@@ -5,6 +5,7 @@ import com.challenge.hotel.domain.model.DateRange;
 import com.challenge.hotel.domain.model.HotelId;
 import com.challenge.hotel.domain.model.Search;
 import com.challenge.hotel.domain.model.SearchId;
+import com.challenge.hotel.domain.model.SearchNotFoundException;
 import com.challenge.hotel.domain.port.input.CountUseCase;
 import com.challenge.hotel.domain.port.input.CountUseCase.CountResult;
 import org.junit.jupiter.api.DisplayName;
@@ -93,13 +94,13 @@ class CountControllerTest {
    }
 
    @Test
-   @DisplayName("Should return 400 when searchId does not exist")
-   void shouldReturn400WhenSearchIdDoesNotExist() throws Exception {
+   @DisplayName("Should return 404 when searchId does not exist")
+   void shouldReturn404WhenSearchIdDoesNotExist() throws Exception {
       when(countUseCase.count(any()))
-            .thenThrow(new IllegalArgumentException("No search found for searchId: test-uuid"));
+            .thenThrow(new SearchNotFoundException(new SearchId("non-existing-uuid")));
       mockMvc.perform(get("/count")
                    .param("searchId", "non-existing-uuid"))
-             .andExpect(status().isBadRequest())
-             .andExpect(jsonPath("$.error").value("No search found for searchId: test-uuid"));
+             .andExpect(status().isNotFound())
+             .andExpect(jsonPath("$.error").value("No search found for searchId: non-existing-uuid"));
    }
 }

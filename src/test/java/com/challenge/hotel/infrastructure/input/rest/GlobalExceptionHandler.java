@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
 
+import com.challenge.hotel.domain.model.SearchNotFoundException;
+
 /**
  * Global exception handler for REST controllers.
  * Maps domain and validation exceptions to appropriate HTTP responses.
@@ -65,10 +67,10 @@ public class GlobalExceptionHandler {
     * @param ex the illegal argument exception
     * @return HTTP 400 with error message
     */
-   @ExceptionHandler(IllegalArgumentException.class)
-   public ResponseEntity<Map<String, String>> handleIllegalArgument(
-         final IllegalArgumentException ex) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+   @ExceptionHandler(SearchNotFoundException.class)
+   public ResponseEntity<Map<String, String>> handleSearchNotFound(
+         final SearchNotFoundException ex) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
                            .body(Map.of("error", ex.getMessage()));
    }
 }

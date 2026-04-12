@@ -1,6 +1,7 @@
 package com.challenge.hotel.application.usecase;
 
 import com.challenge.hotel.domain.model.SearchId;
+import com.challenge.hotel.domain.model.SearchNotFoundException;
 import com.challenge.hotel.domain.port.input.CountUseCase;
 import com.challenge.hotel.domain.port.output.SearchRepository;
 
@@ -31,9 +32,7 @@ public class CountService implements CountUseCase {
     */
    @Override
    public CountResult count(final SearchId searchId) {
-      final var search = searchRepository.findById(searchId)
-                                         .orElseThrow(() -> new IllegalArgumentException(
-                                               "No search found for searchId: %s".formatted(searchId.value())));
+      final var search = searchRepository.findById(searchId).orElseThrow(() -> new SearchNotFoundException(searchId));
       final var count = searchRepository.countEquals(search);
       return new CountResult(search, count);
    }
