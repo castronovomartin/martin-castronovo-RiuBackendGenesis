@@ -101,6 +101,8 @@ class CountControllerTest {
       mockMvc.perform(get("/count")
                    .param("searchId", "non-existing-uuid"))
              .andExpect(status().isNotFound())
-             .andExpect(jsonPath("$.error").value("No search found for searchId: non-existing-uuid"));
+             .andExpect(jsonPath("$.error").value("SEARCH_NOT_FOUND"))
+             .andExpect(jsonPath("$.message").value("No search found for searchId: non-existing-uuid"))
+             .andExpect(jsonPath("$.timestamp").isNotEmpty());
    }
 }
