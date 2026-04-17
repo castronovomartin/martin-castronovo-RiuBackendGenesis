@@ -1,6 +1,7 @@
 package com.challenge.hotel.infrastructure.input.rest;
 
 import com.challenge.hotel.domain.model.SearchNotFoundException;
+import com.challenge.hotel.domain.model.SearchPublishException;
 import com.challenge.hotel.infrastructure.input.rest.dto.ErrorResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -88,5 +89,19 @@ public class GlobalExceptionHandler {
          final IllegalArgumentException ex) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                            .body(ErrorResponse.of("BAD_REQUEST", ex.getMessage()));
+   }
+
+   /**
+    * Handles Kafka publish failures — returns HTTP 503.
+    * Triggered when the event stream is unavailable or the publish times out.
+    *
+    * @param ex the publish exception
+    * @return HTTP 503 with standardized error response
+    */
+   @ExceptionHandler(SearchPublishException.class)
+   public ResponseEntity<ErrorResponse> handleSearchPublish(
+         final SearchPublishException ex) {
+      return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                           .body(ErrorResponse.of("PUBLISH_ERROR", ex.getMessage()));
    }
 }
