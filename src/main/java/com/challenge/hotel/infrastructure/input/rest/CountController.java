@@ -6,9 +6,7 @@ import com.challenge.hotel.infrastructure.input.rest.dto.CountResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
  * REST input adapter for hotel availability search count.
  * Retrieves the reference search and returns the count of equal searches.
  */
-@Validated
 @RestController
 @RequestMapping("/count")
 @Tag(name = "Hotel Availability", description = "Hotel availability search operations")
@@ -38,9 +35,11 @@ public class CountController {
    /**
     * Returns the count of searches equal to the one identified by searchId.
     * Age order is significant — searches with same ages in different order are not equal.
+    * Validates searchId manually to avoid Spring AOP proxy wrapping domain exceptions.
     *
     * @param searchId the identifier of the reference search
     * @return HTTP 200 with search details and count of equal searches
+    * @throws IllegalArgumentException if searchId is blank
     */
    @GetMapping
    @Operation(
@@ -49,8 +48,10 @@ public class CountController {
    )
    public ResponseEntity<CountResponseDTO> count(
          @Parameter(description = "The search identifier returned by POST /search")
-         @NotBlank(message = "searchId must not be blank")
          @RequestParam final String searchId) {
+      if (searchId == null || searchId.isBlank()) {
+         throw new IllegalArgumentException("searchId must not be blank");
+      }
       final var result = countUseCase.count(new SearchId(searchId));
       return ResponseEntity.ok(CountResponseDTO.from(searchId, result));
    }

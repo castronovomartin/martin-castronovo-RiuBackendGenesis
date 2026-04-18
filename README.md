@@ -13,7 +13,7 @@ Backend service for hotel availability search built with Java 21, Spring Boot 4 
 | Apache Kafka | 7.6.0 (Confluent) |
 | Oracle XE | 21c Slim |
 | Maven | 3.9.6 |
-| JUnit | 6 |
+| JUnit | 5 |
 | Jacoco | 0.8.12 |
 
 ---
@@ -207,9 +207,10 @@ com.challenge.hotel
 ├── domain                  ← Pure Java — no framework dependencies
 │   ├── model               ← Entities and value objects
 │   └── port
-│       ├── input           ← Use case interfaces (implemented by application layer)
 │       └── output          ← Repository and publisher interfaces (implemented by infrastructure)
-├── application             ← Use cases — orchestrates domain, no infrastructure knowledge
+├── application             ← Use cases and input ports — no infrastructure knowledge
+│   ├── port
+│   │   └── input           ← Use case interfaces (implemented by application layer)
 │   └── usecase
 └── infrastructure          ← Spring, Kafka, JPA, Oracle
     ├── input
