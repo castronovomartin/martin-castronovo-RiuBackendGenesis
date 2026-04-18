@@ -1,7 +1,7 @@
 package com.challenge.hotel.infrastructure.input.rest;
 
 import com.challenge.hotel.domain.model.SearchId;
-import com.challenge.hotel.domain.port.input.SearchUseCase;
+import com.challenge.hotel.application.port.input.SearchUseCase;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

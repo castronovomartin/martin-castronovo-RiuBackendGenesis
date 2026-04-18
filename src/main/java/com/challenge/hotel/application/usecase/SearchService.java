@@ -2,7 +2,7 @@ package com.challenge.hotel.application.usecase;
 
 import com.challenge.hotel.domain.model.Search;
 import com.challenge.hotel.domain.model.SearchId;
-import com.challenge.hotel.domain.port.input.SearchUseCase;
+import com.challenge.hotel.application.port.input.SearchUseCase;
 import com.challenge.hotel.domain.port.output.SearchEventPublisher;
 
 /**

@@ -1,7 +1,7 @@
 package com.challenge.hotel.infrastructure.input.rest;
 
 import com.challenge.hotel.domain.model.SearchId;
-import com.challenge.hotel.domain.port.input.CountUseCase;
+import com.challenge.hotel.application.port.input.CountUseCase;
 import com.challenge.hotel.infrastructure.input.rest.dto.CountResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

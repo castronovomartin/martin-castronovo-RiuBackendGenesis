@@ -1,6 +1,6 @@
 package com.challenge.hotel.infrastructure.input.rest.dto;
 
-import com.challenge.hotel.domain.port.input.CountUseCase.CountResult;
+import com.challenge.hotel.application.port.input.CountUseCase.CountResult;
 
 /**
  * Immutable Data Transfer Object representing the HTTP response body for GET /count.

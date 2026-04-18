@@ -1,4 +1,4 @@
-package com.challenge.hotel.domain.port.input;
+package com.challenge.hotel.application.port.input;
 
 import com.challenge.hotel.domain.model.Search;
 import com.challenge.hotel.domain.model.SearchId;

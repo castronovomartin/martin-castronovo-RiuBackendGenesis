@@ -6,7 +6,7 @@ import com.challenge.hotel.domain.model.HotelId;
 import com.challenge.hotel.domain.model.Search;
 import com.challenge.hotel.domain.model.SearchId;
 import com.challenge.hotel.domain.model.SearchNotFoundException;
-import com.challenge.hotel.domain.port.input.CountUseCase.CountResult;
+import com.challenge.hotel.application.port.input.CountUseCase.CountResult;
 import com.challenge.hotel.domain.port.output.SearchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

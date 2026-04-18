@@ -2,8 +2,8 @@ package com.challenge.hotel.infrastructure.config;
 
 import com.challenge.hotel.application.usecase.CountService;
 import com.challenge.hotel.application.usecase.SearchService;
-import com.challenge.hotel.domain.port.input.CountUseCase;
-import com.challenge.hotel.domain.port.input.SearchUseCase;
+import com.challenge.hotel.application.port.input.CountUseCase;
+import com.challenge.hotel.application.port.input.SearchUseCase;
 import com.challenge.hotel.domain.port.output.SearchEventPublisher;
 import com.challenge.hotel.domain.port.output.SearchRepository;
 import org.springframework.context.annotation.Bean;

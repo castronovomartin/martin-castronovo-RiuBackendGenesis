@@ -4,7 +4,7 @@ import com.challenge.hotel.domain.model.Ages;
 import com.challenge.hotel.domain.model.DateRange;
 import com.challenge.hotel.domain.model.HotelId;
 import com.challenge.hotel.domain.model.Search;
-import com.challenge.hotel.domain.port.input.SearchUseCase;
+import com.challenge.hotel.application.port.input.SearchUseCase;
 import com.challenge.hotel.infrastructure.input.rest.dto.SearchRequestDTO;
 import com.challenge.hotel.infrastructure.input.rest.dto.SearchResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
