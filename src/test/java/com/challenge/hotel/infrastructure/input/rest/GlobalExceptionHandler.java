@@ -12,7 +12,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Global exception handler for REST controllers.
@@ -24,6 +27,8 @@ public class GlobalExceptionHandler {
 
    /**
     * Handles Bean Validation errors on @RequestBody — returns HTTP 400.
+    * Processes both field-level errors (@NotNull, @NotBlank) and
+    * class-level errors (@ValidDateRange) to ensure all messages reach the client.
     *
     * @param ex the validation exception
     * @return HTTP 400 with standardized error response
@@ -31,18 +36,29 @@ public class GlobalExceptionHandler {
    @ExceptionHandler(MethodArgumentNotValidException.class)
    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(
          final MethodArgumentNotValidException ex) {
-      final var message = ex.getBindingResult()
-                            .getFieldErrors()
-                            .stream()
-                            .collect(Collectors.toMap(
-                                  FieldError::getField,
-                                  field -> field.getDefaultMessage() != null
-                                        ? field.getDefaultMessage()
-                                        : "Invalid value"
-                            ))
-                            .toString();
+
+      final var binding = ex.getBindingResult();
+
+      final var errors = Stream.concat(
+            binding.getFieldErrors().stream()
+                   .map(f -> Map.entry(
+                         f.getField(),
+                         f.getDefaultMessage() != null ? f.getDefaultMessage() : "Invalid value"
+                   )),
+            binding.getGlobalErrors().stream()
+                   .map(e -> Map.entry(
+                         e.getObjectName(),
+                         e.getDefaultMessage() != null ? e.getDefaultMessage() : "Invalid value"
+                   ))
+      ).collect(Collectors.toMap(
+            Map.Entry::getKey,
+            Map.Entry::getValue,
+            (existing, replacement) -> existing,
+            LinkedHashMap::new
+      ));
+
       return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                           .body(ErrorResponse.of("VALIDATION_ERROR", message));
+                           .body(ErrorResponse.of("VALIDATION_ERROR", errors.toString()));
    }
 
    /**
