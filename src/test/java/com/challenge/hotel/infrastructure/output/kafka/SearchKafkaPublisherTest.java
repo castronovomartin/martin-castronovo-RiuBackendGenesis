@@ -1,5 +1,6 @@
 package com.challenge.hotel.infrastructure.output.kafka;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import com.challenge.hotel.domain.model.Ages;
@@ -18,9 +19,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for SearchKafkaPublisher output adapter.
@@ -46,6 +49,8 @@ class SearchKafkaPublisherTest {
    @BeforeEach
    void setUp() {
       publisher = new SearchKafkaPublisher(kafkaTemplate);
+      when(kafkaTemplate.send(anyString(), anyString(), any()))
+            .thenReturn(CompletableFuture.completedFuture(null));
    }
 
    @Test
@@ -87,10 +92,12 @@ class SearchKafkaPublisherTest {
             messageCaptor.capture()
       );
       final var message = messageCaptor.getValue();
-      assertThat(message.searchId()).isEqualTo(SEARCH_ID.value());
-      assertThat(message.hotelId()).isEqualTo(HOTEL_ID.value());
-      assertThat(message.checkIn()).isEqualTo(DATE_RANGE.checkIn());
-      assertThat(message.checkOut()).isEqualTo(DATE_RANGE.checkOut());
-      assertThat(message.ages()).containsExactly(30, 29, 1, 3);
+      assertAll(
+            () -> assertThat(message.searchId()).isEqualTo(SEARCH_ID.value()),
+            () -> assertThat(message.hotelId()).isEqualTo(HOTEL_ID.value()),
+            () -> assertThat(message.checkIn()).isEqualTo(DATE_RANGE.checkIn()),
+            () -> assertThat(message.checkOut()).isEqualTo(DATE_RANGE.checkOut()),
+            () -> assertThat(message.ages()).containsExactly(30, 29, 1, 3)
+      );
    }
 }

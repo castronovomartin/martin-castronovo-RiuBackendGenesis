@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 
 /**
@@ -56,8 +57,10 @@ class CountServiceTest {
       when(searchRepository.findById(SEARCH_ID)).thenReturn(Optional.of(SEARCH));
       when(searchRepository.countEquals(SEARCH)).thenReturn(100L);
       final var result = countService.count(SEARCH_ID);
-      assertThat(result.search()).isEqualTo(SEARCH);
-      assertThat(result.count()).isEqualTo(100L);
+      assertAll(
+            () -> assertThat(result.search()).isEqualTo(SEARCH),
+            () -> assertThat(result.count()).isEqualTo(100L)
+      );
    }
 
    @Test
@@ -84,8 +87,10 @@ class CountServiceTest {
       when(searchRepository.findById(SEARCH_ID)).thenReturn(Optional.of(SEARCH));
       when(searchRepository.countEquals(SEARCH)).thenReturn(50L);
       final CountResult result = countService.count(SEARCH_ID);
-      assertThat(result.search().hotelId()).isEqualTo(HOTEL_ID);
-      assertThat(result.search().dateRange()).isEqualTo(DATE_RANGE);
-      assertThat(result.search().ages()).isEqualTo(AGES);
+      assertAll(
+            () -> assertThat(result.search().hotelId()).isEqualTo(HOTEL_ID),
+            () -> assertThat(result.search().dateRange()).isEqualTo(DATE_RANGE),
+            () -> assertThat(result.search().ages()).isEqualTo(AGES)
+      );
    }
 }

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,19 +68,19 @@ class SearchRepositoryAdapterTest {
    @DisplayName("Should return domain Search when findById finds entity")
    void shouldReturnDomainSearchWhenFindByIdFindsEntity() {
       final var entity = new SearchEntity(
-            SEARCH_ID.value(),
-            HOTEL_ID.value(),
-            DATE_RANGE.checkIn(),
-            DATE_RANGE.checkOut(),
+            SEARCH_ID.value(), HOTEL_ID.value(),
+            DATE_RANGE.checkIn(), DATE_RANGE.checkOut(),
             "30,29,1,3"
       );
       when(searchJpaRepository.findBySearchId(SEARCH_ID.value()))
             .thenReturn(Optional.of(entity));
       final var result = adapter.findById(SEARCH_ID);
-      assertThat(result).isPresent();
-      assertThat(result.get().searchId().value()).isEqualTo(SEARCH_ID.value());
-      assertThat(result.get().hotelId().value()).isEqualTo(HOTEL_ID.value());
-      assertThat(result.get().ages().values()).containsExactly(30, 29, 1, 3);
+      assertAll(
+            () -> assertThat(result).isPresent(),
+            () -> assertThat(result.get().searchId().value()).isEqualTo(SEARCH_ID.value()),
+            () -> assertThat(result.get().hotelId().value()).isEqualTo(HOTEL_ID.value()),
+            () -> assertThat(result.get().ages().values()).containsExactly(30, 29, 1, 3)
+      );
    }
 
    @Test

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -58,21 +59,19 @@ class SearchKafkaConsumerTest {
    @DisplayName("Should convert message to domain object preserving all fields")
    void shouldConvertMessageToDomainObjectPreservingAllFields() {
       final var message = new SearchMessage(
-            SEARCH_ID_VALUE,
-            HOTEL_ID_VALUE,
-            CHECK_IN,
-            CHECK_OUT,
-            AGES_LIST
+            SEARCH_ID_VALUE, HOTEL_ID_VALUE, CHECK_IN, CHECK_OUT, AGES_LIST
       );
       final var searchCaptor = ArgumentCaptor.forClass(Search.class);
       consumer.consume(message);
       verify(searchRepository).save(searchCaptor.capture());
       final var search = searchCaptor.getValue();
-      assertThat(search.searchId().value()).isEqualTo(SEARCH_ID_VALUE);
-      assertThat(search.hotelId().value()).isEqualTo(HOTEL_ID_VALUE);
-      assertThat(search.dateRange().checkIn()).isEqualTo(CHECK_IN);
-      assertThat(search.dateRange().checkOut()).isEqualTo(CHECK_OUT);
-      assertThat(search.ages().values()).containsExactly(30, 29, 1, 3);
+      assertAll(
+            () -> assertThat(search.searchId().value()).isEqualTo(SEARCH_ID_VALUE),
+            () -> assertThat(search.hotelId().value()).isEqualTo(HOTEL_ID_VALUE),
+            () -> assertThat(search.dateRange().checkIn()).isEqualTo(CHECK_IN),
+            () -> assertThat(search.dateRange().checkOut()).isEqualTo(CHECK_OUT),
+            () -> assertThat(search.ages().values()).containsExactly(30, 29, 1, 3)
+      );
    }
 
    @Test

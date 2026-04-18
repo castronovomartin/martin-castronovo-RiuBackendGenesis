@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 /**
  * Unit tests for Search domain entity.
@@ -26,11 +27,13 @@ class SearchTest {
    @DisplayName("Should create Search with generated SearchId via factory method")
    void shouldCreateSearchWithGeneratedSearchId() {
       final var search = Search.create(HOTEL_ID, DATE_RANGE, AGES);
-      assertThat(search.searchId()).isNotNull();
-      assertThat(search.searchId().value()).isNotBlank();
-      assertThat(search.hotelId()).isEqualTo(HOTEL_ID);
-      assertThat(search.dateRange()).isEqualTo(DATE_RANGE);
-      assertThat(search.ages()).isEqualTo(AGES);
+      assertAll(
+            () -> assertThat(search.searchId()).isNotNull(),
+            () -> assertThat(search.searchId().value()).isNotBlank(),
+            () -> assertThat(search.hotelId()).isEqualTo(HOTEL_ID),
+            () -> assertThat(search.dateRange()).isEqualTo(DATE_RANGE),
+            () -> assertThat(search.ages()).isEqualTo(AGES)
+      );
    }
 
    @Test

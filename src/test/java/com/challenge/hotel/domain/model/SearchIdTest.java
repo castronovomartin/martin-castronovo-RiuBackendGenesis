@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 /**
  * Unit tests for SearchId value object.
@@ -24,9 +25,11 @@ class SearchIdTest {
    void shouldGenerateUniqueSearchId() {
       final var first = SearchId.generate();
       final var second = SearchId.generate();
-      assertThat(first).isNotEqualTo(second);
-      assertThat(first.value()).isNotBlank();
-      assertThat(second.value()).isNotBlank();
+      assertAll(
+            () -> assertThat(first).isNotEqualTo(second),
+            () -> assertThat(first.value()).isNotBlank(),
+            () -> assertThat(second.value()).isNotBlank()
+      );
    }
 
    @Test
