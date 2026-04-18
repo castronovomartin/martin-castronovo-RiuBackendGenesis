@@ -16,6 +16,10 @@ spring:
     hikari:
       connection-timeout: 60000
       initialization-fail-timeout: -1
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1200000
 
   # JPA / Hibernate
   jpa:
@@ -26,6 +30,11 @@ spring:
     properties:
       hibernate:
         format_sql: false
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        generate_statistics: false
 
   # Kafka
   kafka:
